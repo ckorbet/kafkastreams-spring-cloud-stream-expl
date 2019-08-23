@@ -1,0 +1,46 @@
+server:
+ servlet:
+  context-path: /cartorgon
+ port: 8080
+ 
+info:
+ application:
+  name: kafkastreams-spring-cloud-stream-expl
+  description: Demo Project for Spring Cloud Stream with Apache Kafka Streams
+  type: Spring Cloud Stream micro-service
+  version: 0.0.1-SNAPSHOT
+ developers:
+  - author:     
+     name: Carlos Torres
+     email: carlos.a.torres-gonzalez@capgemini.com
+     role: Architect
+  - author:     
+     name: Carlos Torres
+     email: carlos.a.torres-gonzalez@capgemini.com
+     role: Backend developer
+ contributors:
+  - author:     
+     name: Carlos Torres
+     email: carlos.a.torres-gonzalez@capgemini.com
+     role: Tester
+
+management:
+ endpoint:
+  shutdown:
+   enabled: true
+ endpoints:
+  beans:
+   enabled: false
+  web:
+   base-path: /actuator
+   exposure:
+    include: '*'
+    exclude: loggers
+ security:
+  enabled: false
+
+spring:
+ application:
+  name: kafkastreams-spring-cloud-stream-expl
+ jmx:
+  default-domain: kafkastreams.spring.cloud.stream.expl 
