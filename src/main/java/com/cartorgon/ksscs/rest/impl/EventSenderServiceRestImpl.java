@@ -19,14 +19,14 @@ import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping(path = "/sendevent", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class EventSenderServiceRestImpl implements EventSenderServiceRest {
 	
 	@Autowired
 	private KafkaPublisherService publisher;
-	
-	@PostMapping
+		
+	@PostMapping(path = "/sendevent")
 	@Override
 	public ResponseEntity<String> sendEvent(
 			@Valid @RequestParam(value = "firstName", required = true) String firstName, 
@@ -38,6 +38,15 @@ public class EventSenderServiceRestImpl implements EventSenderServiceRest {
 		
 		log.info("Received REST request to 'sendEvent'...");
 		this.publisher.publish(new MyKafkaStreamsEventMsg(firstName, lastName));
+		log.info("Serving REST response");
+		return new ResponseEntity<>("{\"sent\":\"OK\"}", HttpStatus.OK) ;
+	}
+
+	@PostMapping(path = "/dostreaming")
+	@Override
+	public ResponseEntity<String> doStream() {
+		log.info("Received REST request to 'doStreaming'...");
+		this.publisher.doStreaming();		
 		log.info("Serving REST response");
 		return new ResponseEntity<>("{\"sent\":\"OK\"}", HttpStatus.OK) ;
 	}

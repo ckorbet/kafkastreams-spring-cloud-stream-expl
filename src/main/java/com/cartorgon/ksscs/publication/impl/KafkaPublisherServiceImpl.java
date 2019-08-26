@@ -1,5 +1,12 @@
 package com.cartorgon.ksscs.publication.impl;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -9,6 +16,7 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Service;
 
 import com.cartorgon.ksscs.model.MyKafkaStreamsEvent;
+import com.cartorgon.ksscs.model.impl.MyKafkaStreamsEventMsg;
 import com.cartorgon.ksscs.publication.KafkaPublisherService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,19 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class KafkaPublisherServiceImpl implements KafkaPublisherService {
 	
-	private final MessageChannel eventoutput;
+	private static final Random RANDOM = new Random();
 	
-	/**
-	 * <p>
-	 * Default constructor
-	 * </p>
-	 */
-	public KafkaPublisherServiceImpl(final MessageChannel eventoutput) {
-		this.eventoutput = eventoutput;
-	}
+	@Autowired
+	private MessageChannel eventoutput;
 
 	@Override
-	public void publish(MyKafkaStreamsEvent event) {
+	public final void publish(final MyKafkaStreamsEvent event) {
 		
 		final Message<MyKafkaStreamsEvent> msg = 
 				MessageBuilder
@@ -49,5 +51,31 @@ public class KafkaPublisherServiceImpl implements KafkaPublisherService {
 		} catch (final Exception excp) {
 			log.error("Publication failed !!", excp);
 		}		
+	}
+
+	@Override
+	public final void doStreaming() {
+		final List<MyKafkaStreamsEvent> events = Arrays.asList(
+				new MyKafkaStreamsEventMsg("Carlos", "Torres"),
+				new MyKafkaStreamsEventMsg("Dimitri", "Koklov"),
+				new MyKafkaStreamsEventMsg("Piros", "Dimas"),
+				new MyKafkaStreamsEventMsg("Lu", "Xioajun"),
+				new MyKafkaStreamsEventMsg("Ilya", "Ilyin")
+				);		
+				
+		final Runnable runnable = () -> {
+			final MyKafkaStreamsEvent event = events.get(RANDOM.nextInt(events.size()));
+			try {
+				log.info(String.format("Stream publication [%s] ...", event.toString()));
+				this.eventoutput.send(MessageBuilder					
+						.withPayload(event)
+						.setHeader(KafkaHeaders.MESSAGE_KEY, event.getFirstName().getBytes())
+						.setHeader(MessageHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+						.build());
+			} catch (final Exception excp) {
+				log.error("Stream publication failed !!", excp);
+			}
+		};		
+		Executors.newScheduledThreadPool(1).scheduleAtFixedRate(runnable, 1, 1, TimeUnit.SECONDS);		
 	}
 }

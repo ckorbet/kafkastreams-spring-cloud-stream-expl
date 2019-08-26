@@ -9,4 +9,5 @@ import com.cartorgon.ksscs.model.MyKafkaStreamsEvent;
  */
 public interface KafkaPublisherService {	
 	void publish(MyKafkaStreamsEvent event);
+	void doStreaming();
 }

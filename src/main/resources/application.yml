@@ -61,6 +61,11 @@ spring:
      destination: mytopic
      contentType: application/json
      producer.header-mode: raw
-    eventinput:
+    streaminput:
      destination: mytopic
      contentType: application/json
+     consumer.header-mode: raw
+    streamoutput:
+     destination: mystreamtopic
+     contentType: application/json
+     consumer.header-mode: raw
