@@ -43,4 +43,24 @@ spring:
  application:
   name: kafkastreams-spring-cloud-stream-expl
  jmx:
-  default-domain: kafkastreams.spring.cloud.stream.expl 
+  default-domain: kafkastreams.spring.cloud.stream.expl
+ 
+ cloud:
+  stream:
+   kafka:
+    binder:
+     brokers: localhost:9092
+    streams:     
+      configuration:
+       commit.interval.mms: 1000
+       default:
+        key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+   bindings:
+    eventoutput:
+     destination: mytopic
+     contentType: application/json
+     producer.header-mode: raw
+    eventinput:
+     destination: mytopic
+     contentType: application/json
