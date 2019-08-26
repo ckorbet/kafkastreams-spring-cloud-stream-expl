@@ -9,7 +9,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 
 import com.cartorgon.ksscs.channels.MyKafkaStreamsBinding;
-import com.cartorgon.ksscs.model.MyKafkaStreamsEvent;
+import com.cartorgon.ksscs.model.impl.MyKafkaStreamsEventMsg;
+import com.cartorgon.ksscs.publication.KafkaStreamsConsumerService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,11 +21,11 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
-public class KafkaStreamsConsumerServiceImpl {
+public class KafkaStreamsConsumerServiceImpl implements KafkaStreamsConsumerService{
 
 	@StreamListener
 	@SendTo(MyKafkaStreamsBinding.KS_STREAM_OUTPUT_NAME)
-	public KStream<String, Long> process(@Input (MyKafkaStreamsBinding.KS_STREAM_INPUT_NAME) KStream<String, MyKafkaStreamsEvent> events) {
+	public KStream<String, Long> process(@Input (MyKafkaStreamsBinding.KS_STREAM_INPUT_NAME) KStream<String, MyKafkaStreamsEventMsg> events) {
 		/*
 		 * Below the example functionality that's done with Kafka Streams
 		 */

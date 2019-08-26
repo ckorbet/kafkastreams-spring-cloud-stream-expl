@@ -69,7 +69,7 @@ public class KafkaPublisherServiceImpl implements KafkaPublisherService {
 				log.info(String.format("Stream publication [%s] ...", event.toString()));
 				this.eventoutput.send(MessageBuilder					
 						.withPayload(event)
-						.setHeader(KafkaHeaders.MESSAGE_KEY, event.getFirstName().getBytes())
+						.setHeader(KafkaHeaders.MESSAGE_KEY, event.getFirstName())
 						.setHeader(MessageHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 						.build());
 			} catch (final Exception excp) {

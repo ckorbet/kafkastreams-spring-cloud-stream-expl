@@ -56,16 +56,20 @@ spring:
        default:
         key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
         value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-   bindings:
-    eventoutput:
-     destination: mytopic
-     contentType: application/json
-     producer.header-mode: raw
-    streaminput:
-     destination: mytopic
-     contentType: application/json
-     consumer.header-mode: raw
-    streamoutput:
-     destination: mystreamtopic
-     contentType: application/json
-     consumer.header-mode: raw
+      bindings:
+       streamoutput:
+        producer:
+         key-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+         value-serde: org.apache.kafka.common.serialization.Serdes$LongSerde    
+  bindings:
+   eventoutput:
+    destination: mytopic
+    producer.header-mode: raw
+   streaminput:
+    destination: mytopic
+    consumer.header-mode: raw
+   streamoutput:
+    destination: mystreamtopic
+    producer:
+     header-mode: raw
+     use-native-encoding: true   
