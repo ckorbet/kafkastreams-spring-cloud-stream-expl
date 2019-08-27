@@ -50,26 +50,31 @@ spring:
    kafka:
     binder:
      brokers: localhost:9092
-    streams:     
+    streams:
+     binder:     
       configuration:
        commit.interval.mms: 1000
        default:
         key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
         value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-      bindings:
-       streamoutput:
-        producer:
-         key-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-         value-serde: org.apache.kafka.common.serialization.Serdes$LongSerde    
-  bindings:
-   eventoutput:
-    destination: mytopic
-    producer.header-mode: raw
-   streaminput:
-    destination: mytopic
-    consumer.header-mode: raw
-   streamoutput:
-    destination: mystreamtopic
-    producer:
-     header-mode: raw
-     use-native-encoding: true   
+     bindings:
+      streamInput:
+       consumer:
+        key-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        value-serde: org.apache.kafka.common.serialization.Serdes$LongSerde
+      streamOutput:
+       producer:
+        key-serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        value-serde: org.apache.kafka.common.serialization.Serdes$LongSerde
+   bindings:
+    eventOutput:
+     destination: mytopic
+     producer.header-mode: raw
+    streamInput:
+     destination: mytopic
+     consumer.header-mode: raw
+    streamOutput:
+     destination: mystreamtopic
+     producer:
+      header-mode: raw
+      use-native-encoding: true   

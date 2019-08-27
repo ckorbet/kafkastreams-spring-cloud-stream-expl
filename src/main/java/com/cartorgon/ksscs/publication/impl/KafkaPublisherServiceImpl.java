@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -15,6 +16,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Service;
 
+import com.cartorgon.ksscs.channels.MyKafkaStreamsBinding;
 import com.cartorgon.ksscs.model.MyKafkaStreamsEvent;
 import com.cartorgon.ksscs.model.impl.MyKafkaStreamsEventMsg;
 import com.cartorgon.ksscs.publication.KafkaPublisherService;
@@ -33,20 +35,18 @@ public class KafkaPublisherServiceImpl implements KafkaPublisherService {
 	private static final Random RANDOM = new Random();
 	
 	@Autowired
-	private MessageChannel eventoutput;
+	private MessageChannel eventOutput;
 
 	@Override
-	public final void publish(final MyKafkaStreamsEvent event) {
-		
-		final Message<MyKafkaStreamsEvent> msg = 
-				MessageBuilder
+	public final void publish(final MyKafkaStreamsEvent event) {		
+		final Message<MyKafkaStreamsEvent> msg = MessageBuilder
 				.withPayload(event)
 				.setHeader(KafkaHeaders.MESSAGE_KEY, event.getFirstName().getBytes())
 				.setHeader(MessageHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.build();
 		try {
 			log.info(String.format("Publishing [%s] ...", event.toString()));
-			this.eventoutput.send(msg);
+			this.eventOutput.send(msg);
 			log.info("Publication completed !!");
 		} catch (final Exception excp) {
 			log.error("Publication failed !!", excp);
@@ -67,7 +67,7 @@ public class KafkaPublisherServiceImpl implements KafkaPublisherService {
 			final MyKafkaStreamsEvent event = events.get(RANDOM.nextInt(events.size()));
 			try {
 				log.info(String.format("Stream publication [%s] ...", event.toString()));
-				this.eventoutput.send(MessageBuilder					
+				this.eventOutput.send(MessageBuilder					
 						.withPayload(event)
 						.setHeader(KafkaHeaders.MESSAGE_KEY, event.getFirstName().getBytes())
 						.setHeader(MessageHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

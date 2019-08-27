@@ -9,10 +9,10 @@ import com.cartorgon.ksscs.model.MyKafkaStreamsEvent;
 
 public interface MyKafkaStreamsBinding {
 	
-	public static final String KS_EVENT_OUTPUT_NAME = "eventoutput";
-	public static final String KS_STREAM_INPUT_NAME = "streaminput";
-	public static final String KS_STREAM_OUTPUT_NAME = "streamoutput";
-	public static final String KS_STREAM_COUNT_NAME = "streamcount";
+	public static final String KS_EVENT_OUTPUT_NAME = "eventOutput";
+	public static final String KS_STREAM_INPUT_NAME = "streamInput";
+	public static final String KS_STREAM_OUTPUT_NAME = "streamOutput";
+	public static final String KS_STREAM_COUNT_NAME = "streamCount";
 	
 	@Output(KS_EVENT_OUTPUT_NAME)
 	MessageChannel eventOutput();
