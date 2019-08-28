@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class KafkaStreamsConsumerServiceImpl implements KafkaStreamsConsumerService{
 
+	@Override
 	@StreamListener(MyKafkaStreamsBinding.KS_STREAM_INPUT_NAME)
 	@SendTo(MyKafkaStreamsBinding.KS_STREAM_OUTPUT_NAME)
 	public final KStream<String, Long> process(final KStream<String, MyKafkaStreamsEventMsg> events) {
@@ -33,7 +34,9 @@ public class KafkaStreamsConsumerServiceImpl implements KafkaStreamsConsumerServ
 			log.info(String.format("Filtering %s %s", value.getFirstName(), value.getLastName()));
 			final boolean res = "Carlos".equals(value.getFirstName());
 			if(res) {
+				log.info("------------------------------");
 				log.info(String.format("'firstName' '%s' found and filtered in", value.getFirstName()));
+				log.info("------------------------------");			
 			}
 			return res;
 		})

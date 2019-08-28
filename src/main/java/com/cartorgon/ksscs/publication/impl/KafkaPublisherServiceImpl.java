@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -16,7 +16,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Service;
 
-import com.cartorgon.ksscs.channels.MyKafkaStreamsBinding;
 import com.cartorgon.ksscs.model.MyKafkaStreamsEvent;
 import com.cartorgon.ksscs.model.impl.MyKafkaStreamsEventMsg;
 import com.cartorgon.ksscs.publication.KafkaPublisherService;
@@ -32,11 +31,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class KafkaPublisherServiceImpl implements KafkaPublisherService {
 	
-	private static final Random RANDOM = new Random();
-	
 	@Autowired
 	private MessageChannel eventOutput;
-
+	
+	@Autowired
+	private ScheduledExecutorService executorService;
+	
 	@Override
 	public final void publish(final MyKafkaStreamsEvent event) {		
 		final Message<MyKafkaStreamsEvent> msg = MessageBuilder
@@ -61,10 +61,9 @@ public class KafkaPublisherServiceImpl implements KafkaPublisherService {
 				new MyKafkaStreamsEventMsg("Piros", "Dimas"),
 				new MyKafkaStreamsEventMsg("Lu", "Xioajun"),
 				new MyKafkaStreamsEventMsg("Ilya", "Ilyin")
-				);		
-				
+				);				
 		final Runnable runnable = () -> {
-			final MyKafkaStreamsEvent event = events.get(RANDOM.nextInt(events.size()));
+			final MyKafkaStreamsEvent event = events.get(new Random().nextInt(events.size()));
 			try {
 				log.info(String.format("Stream publication [%s] ...", event.toString()));
 				this.eventOutput.send(MessageBuilder					
@@ -76,6 +75,6 @@ public class KafkaPublisherServiceImpl implements KafkaPublisherService {
 				log.error("Stream publication failed !!", excp);
 			}
 		};		
-		Executors.newScheduledThreadPool(1).scheduleAtFixedRate(runnable, 1, 1, TimeUnit.SECONDS);		
+		this.executorService.scheduleAtFixedRate(runnable, 250, 250, TimeUnit.MILLISECONDS);		
 	}
 }
