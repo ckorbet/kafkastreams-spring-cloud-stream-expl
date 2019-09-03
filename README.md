@@ -14,12 +14,15 @@ Demo Project for [Spring Cloud Stream](https://spring.io/projects/spring-cloud-s
 - [Micrometer Prometheus](https://micrometer.io/docs/registry/prometheus) 1.2.0
 
 ## References
-- [Introduction to Kafka Streams in Java by Baeldung](https://www.baeldung.com/java-kafka-streams)
-- [Kafka Streams and Spring Cloud Stream by Pivotal](https://spring.io/blog/2018/04/19/kafka-streams-and-spring-cloud-stream)
-- [Spring Cloud Stream with Kafka by DZone](https://dzone.com/articles/spring-cloud-stream-with-kafka)
-- [Spring Boot Actuator metrics monitoring with Prometheus and Grafana by Callicoder](https://www.callicoder.com/spring-boot-actuator-metrics-monitoring-dashboard-prometheus-grafana/)
+- [Introduction to Kafka Streams in Java _(by Baeldung_)](https://www.baeldung.com/java-kafka-streams)
+- [Kafka Streams and Spring Cloud Stream _(by Pivotal)_](https://spring.io/blog/2018/04/19/kafka-streams-and-spring-cloud-stream)
+- [Spring Cloud Stream with Kafka _(by DZone)_](https://dzone.com/articles/spring-cloud-stream-with-kafka)
+- [Spring Boot Actuator metrics monitoring with Prometheus and Grafana _(by Callicoder)_](https://www.callicoder.com/spring-boot-actuator-metrics-monitoring-dashboard-prometheus-grafana/)
+- [Testing an Apache Kafka Integration within a Spring Boot Application_(by Mimacomblog)_](https://blog.mimacom.com/testing-apache-kafka-with-spring-boot/)
+- [Unit Testing Kafka Consumers _(by Jesse-Anderson.com)_](https://www.jesse-anderson.com/2016/11/unit-testing-kafka-consumers/)
+- [Quick and Practical Example of Kafka Testing _(by DZone)_](https://dzone.com/articles/a-quick-and-practical-example-of-kafka-testing)
+- [Spring kafka Embedded Unit Test Example _(by Codenotfound)_](https://codenotfound.com/spring-kafka-embedded-unit-test-example.html)
 
 ## Platform _(out of scope)_
 - Kafka broker running in a [dockerized Confluent Platform](https://docs.confluent.io/current/quickstart/ce-docker-quickstart.html) in local machine, reachable at localhost:9092
 - Prometheus server running in a docker container _(Prometheus config file at `/config/prometheus`)_, reachable at localhost:9090
-`docker run -d --name=prometheus -p 9090:9090 -v ./prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus --config.file=/etc/prometheus/prometheus.yml`
