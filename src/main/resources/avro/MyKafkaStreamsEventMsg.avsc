@@ -1,0 +1,15 @@
+{
+   "type":"record",
+   "name":"MyKafkaStreamsEventMsg",
+   "namespace":"com.cartorgon.ksscs.model.impl",
+   "fields":[
+      {
+         "name":"firstName",
+         "type":"string"
+      },
+      {
+         "name":"lastName",
+         "type":"string"
+      }
+   ]
+}

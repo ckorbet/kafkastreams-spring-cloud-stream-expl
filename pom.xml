@@ -26,8 +26,10 @@
 		<junitparams.version>1.1.1</junitparams.version>
 		<assertj.version>3.13.2</assertj.version>
 		<micrometer-prometheus.version>1.2.0</micrometer-prometheus.version>
+		<avro.version>1.9.1</avro.version>
+		<kafka-avro.version>5.3.1</kafka-avro.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>	
+		<maven.compiler.target>${java.version}</maven.compiler.target>			
 	</properties>
 	
 	<dependencyManagement>
@@ -119,6 +121,17 @@
 		    <artifactId>micrometer-registry-prometheus</artifactId>
 		    <version>${micrometer-prometheus.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro</artifactId>
+			<version>${avro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-avro-serializer</artifactId>
+			<version>${kafka-avro.version}</version>
+		</dependency>
 	</dependencies>	
 
 	<build>
@@ -127,7 +140,32 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
+			<plugin>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-maven-plugin</artifactId>
+				<version>${avro.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>schema</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.basedir}/src/main/resources/avro/</sourceDirectory>
+							<outputDirectory>${project.build.directory}/generated/avro</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>		
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>confluent</id>
+			<name>Confluent</name>
+			<url>http://packages.confluent.io/maven/</url>
+		</repository>
+	</repositories>
 
 </project>
